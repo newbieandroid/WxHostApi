@@ -9,7 +9,7 @@
 
         SELECT * from shops
         <if test="province != null">
-            where  province = #{province}
+            where  province like  CONCAT("%",#{province},"%")
         </if>
     </select>
 
