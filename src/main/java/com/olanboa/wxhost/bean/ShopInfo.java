@@ -14,5 +14,6 @@ public class ShopInfo implements Serializable {
     private String address;
     private String province;
     private Integer hostid;
+    private String imgs;
 
 }

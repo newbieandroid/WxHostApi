@@ -6,11 +6,11 @@ package com.olanboa.wxhost.config;
  */
 public enum ResultCodeType {
 
-    SUCCESS(100, "获取数据成功"),
+    SUCCESS(100, "操作成功"),
     SQLERROR(101, "远程链接失败"),
-    EMPTYDATA(102, "暂无数据"),
+    FAIL(102, "操作失败"),
     PARAMERROR(103, "参数错误"),
-
+    NOTFIND(104, "数据不存在"),
     OTHERSERROR(999, "未知异常"),
     ;
 

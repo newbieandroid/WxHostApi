@@ -16,7 +16,6 @@ public class HomeApi {
     private HomeMapper homeMapper;
 
     @RequestMapping(method = RequestMethod.GET, name = "/getHomeInfo")
-    @ResponseBody
     BaseHttpResultBean<List<HomeBean>> getHomeInfo(@RequestParam(required = false, name = "province") String province) {
 
         BaseHttpResultBean baseBean = new BaseHttpResultBean();

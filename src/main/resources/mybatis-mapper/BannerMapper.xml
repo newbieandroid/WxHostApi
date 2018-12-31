@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olanboa.wxhost.mpper.BannerMapper">
+
+
+    <!-- 在mapper中不能使用@param注解  否则返回自增主键失败 -->
+    <insert id="addBanner" parameterType="java.util.List" keyProperty="bannerId" useGeneratedKeys="true">
+        <if test="list != null">
+            INSERT INTO banner(pic,state) VALUES
+            <foreach item="item" collection="list" separator=",">
+                <if test="item.imgPath != null and item.imgPath != ''">
+                    ("${item.imgPath}",0)
+                </if>
+            </foreach>
+        </if>
+    </insert>
+
+
+    <update id="updateBanner" parameterType="com.olanboa.wxhost.bean.httpreq.BannerDb">
+
+        UPDATE banner SET id =id
+
+        <if test="item.imgPath != null and item.imgPath != ''">
+            , pic = "${item.imgPath}"
+        </if>
+
+
+        <if test="item.state != null">
+            , state = #{item.state}
+        </if>
+
+        where id = #{item.bannerId} and state = 0
+
+    </update>
+
+
+    <select id="getItem" parameterType="java.lang.Integer" resultType="com.olanboa.wxhost.bean.httpreq.BannerDb">
+
+
+        <if test="bannerId != null">
+            SELECT id bannerId,pic imgPath,state FROM banner WHERE id = #{bannerId} AND state = 0
+        </if>
+
+    </select>
+
+
+    <select id="getList" resultType="com.olanboa.wxhost.bean.httpreq.BannerDb">
+
+       SELECT b.pic imgPath ,b.id bannerId FROM banner b WHERE b.state = 0
+
+    </select>
+
+
+</mapper>
