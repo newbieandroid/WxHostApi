@@ -97,9 +97,13 @@ public class ShopApi {
 
 
     @GetMapping("/getShopList")
-    BaseHttpResultBean getShopList(@RequestParam(required = false, name = "province") String data) {
+    BaseHttpResultBean getShopList(@RequestParam(required = false, name = "province") String data, @RequestParam(required = false, name = "shopId") Integer shopId) {
 
-        return SetResultUtils.checkResult(shopMapper.getShopList(data));
+        if (shopId == 0) {
+            shopId = null;
+        }
+
+        return SetResultUtils.checkResult(shopMapper.getShopList(data, shopId));
     }
 
 

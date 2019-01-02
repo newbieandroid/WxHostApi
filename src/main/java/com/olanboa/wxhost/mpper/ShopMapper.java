@@ -15,6 +15,6 @@ public interface ShopMapper {
     ShopInfo getShopInfo(@Param("shopId") Integer shopId);
 
 
-    List<ShopInfo> getShopList(@Param("province") String province);
+    List<ShopInfo> getShopList(@Param("province") String province, @Param("shopId") Integer shopId);
 
 }

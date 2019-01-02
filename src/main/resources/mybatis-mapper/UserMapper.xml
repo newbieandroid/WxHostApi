@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olanboa.wxhost.mpper.UserMapper">
+
+
+    <select id="getUserType" resultType="com.olanboa.wxhost.bean.UserTypeDb">
+
+        select   id typeId ,userTypeName typeName from  userType
+
+    </select>
+
+
+    <insert id="addShopUserReq" parameterType="com.olanboa.wxhost.bean.UserDb"
+            useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO
+        `user`( phone, userName, passowrd, userTypeId, shopId,state ,head)
+        VALUES
+        ("${phone}","${userName}",
+
+
+        <choose>
+
+            <when test="userTypeId == 2">
+                ""
+            </when>
+
+            <when test="passWord == null or passWord = ''">
+                ""
+            </when>
+            <otherwise>
+                "${passWord}"
+            </otherwise>
+
+        </choose>
+
+        ,#{userTypeId},#{shopdId},0,
+
+        <choose>
+
+            <when test="head == null or head == ''">
+                ""
+            </when>
+
+            <otherwise>
+                ${head}
+            </otherwise>
+        </choose>
+
+
+        )
+
+    </insert>
+
+
+    <select id="getUserItem" resultType="com.olanboa.wxhost.bean.UserDb">
+
+
+        SELECT id userId ,phone,userName, userTypeId ,shopId shopdId,head FROM `user` WHERE id = ${id}
+
+        <choose>
+            <when test="state != null ">
+                AND state = #{state}
+            </when>
+
+            <otherwise>
+                AND state = 0
+            </otherwise>
+        </choose>
+
+
+    </select>
+
+
+    <update id="updateUserInfo" parameterType="com.olanboa.wxhost.bean.UserDb">
+
+
+        UPDATE `user` SET id = id
+
+        <if test="userName != null and userName != ''">
+            , userName = "${userName}"
+        </if>
+
+
+        <if test="phone != null and phone != ''">
+            , phone = "${phone}"
+        </if>
+
+
+        <if test="passWord != null and passWord != ''">
+            , passowrd = "${passWord}"
+        </if>
+
+
+        <if test="shopdId != null ">
+            , shopId = ${shopdId}
+        </if>
+
+
+        <if test="userTypeId != null ">
+            , userTypeId = ${userTypeId}
+        </if>
+
+
+        <if test="head != null  and head != ''">
+            , head = ${head}
+        </if>
+
+        where id = #{userId}
+    </update>
+
+
+    <select id="getUserList" parameterType="java.lang.Integer" resultType="com.olanboa.wxhost.bean.UserDb">
+
+        SELECT
+        id userId,
+        phone phone,
+        userName userName,
+        userTypeId userTypeId,
+        shopId shopdId,
+        head head,
+        state
+        FROM
+        `user`
+        WHERE
+
+        <choose>
+
+            <when test="userId == 3 or userId == 4">
+                state != 2
+            </when>
+
+            <otherwise>
+                state = 0
+            </otherwise>
+
+        </choose>
+
+
+        <if test="shopId  != null and shopId != ''">
+            AND shopId = #{shopId}
+        </if>
+
+    </select>
+
+</mapper>

@@ -34,7 +34,7 @@ public class HomeApi {
         BaseHttpResultBean<HomeBean> baseHttpResultBean = new BaseHttpResultBean<HomeBean>();
         HomeBean homeBean = new HomeBean();
         homeBean.setBeanners(bannerMapper.getList());
-        homeBean.setShopInfoList(shopMapper.getShopList(province));
+        homeBean.setShopInfoList(shopMapper.getShopList(province, null));
         homeBean.setImgs(imageMapper.getHomeImg());
         baseHttpResultBean.setResult(homeBean);
 

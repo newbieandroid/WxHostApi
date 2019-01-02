@@ -110,6 +110,11 @@
             AND province LIKE CONCAT ("%","${province}","%")
         </if>
 
+        <if test="shopId != null ">
+            AND id = #{shopId}
+        </if>
+
+
     </select>
 
 
