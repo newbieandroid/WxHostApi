@@ -1,15 +1,16 @@
 package com.olanboa.wxhost.bean;
 
 
+import com.olanboa.wxhost.bean.httpreq.BannerDb;
+import com.olanboa.wxhost.bean.httpreq.HomeImgDb;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class HomeBean {
-    String address;
-    List<String> beanners;
-    List<String> imgs;
+    List<BannerDb> beanners;
+    List<HomeImgDb> imgs;
     List<ShopInfo> shopInfoList;
 
 }
