@@ -30,7 +30,6 @@ public class QiNiuApi {
 
         String token = auth.uploadToken(environment.getProperty("qiniuBucket", String.class), key);
 
-        System.out.println("七牛上传token===>" + token);
 
         QiniuTokenBean qiniuTokenBean = new QiniuTokenBean();
         qiniuTokenBean.setToken(token);

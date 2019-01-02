@@ -9,5 +9,8 @@
     <mappers>
         <mapper resource="mybatis-mapper/HomeMapper.xml"/>
         <mapper resource="mybatis-mapper/BannerMapper.xml"/>
+        <mapper resource="mybatis-mapper/ImageMapper.xml"/>
+        <mapper resource="mybatis-mapper/ShopMapper.xml"/>
     </mappers>
+
 </configuration>

@@ -2,6 +2,7 @@ package com.olanboa.wxhost.utils;
 
 import com.olanboa.wxhost.base.BaseHttpResultBean;
 import com.olanboa.wxhost.bean.httpreq.AddBannerReq;
+import com.olanboa.wxhost.bean.httpreq.HomeImgDb;
 import com.olanboa.wxhost.config.ResultCodeType;
 
 import java.util.List;

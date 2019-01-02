@@ -6,7 +6,6 @@ import com.olanboa.wxhost.bean.httpreq.BannerDb;
 import com.olanboa.wxhost.config.ResultCodeType;
 import com.olanboa.wxhost.mpper.BannerMapper;
 import com.olanboa.wxhost.utils.SetResultUtils;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

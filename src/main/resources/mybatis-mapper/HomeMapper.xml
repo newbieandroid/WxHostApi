@@ -7,22 +7,23 @@
 
     <select id="getHomeInfo" parameterType="java.lang.String" resultType="com.olanboa.wxhost.bean.ShopInfo">
         SELECT
-          b.shopName,
-          b.address,
-          b.`desc`,
-          b.imgs,
-          a.userName,
-          a.phone
+        b.shopName,
+        b.address,
+        b.`desc`,
+        b.imgs,
+        a.userName,
+        a.phone
         FROM
-          shops b,
-          `user` a
+        shops b,
+        `user` a
         WHERE
-          b.hostid = a.id
+        b.hostid = a.id
         AND a.state = 0
         AND b.state = 0
         <if test="province != null and province != ''">
             AND b.province LIKE CONCAT("%",#{province},"%")
         </if>
     </select>
+
 
 </mapper>

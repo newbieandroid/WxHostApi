@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olanboa.wxhost.mpper.ShopMapper">
+
+
+    <insert id="addShopMapper"
+            parameterType="com.olanboa.wxhost.bean.ShopInfo"
+            useGeneratedKeys="true"
+            keyProperty="shopId">
+
+        INSERT INTO shops
+        (shopName,
+        address,
+        province,
+        hostid,
+        `desc`,
+        imgs,
+        state)
+        VALUES
+        ("${shopName}",
+        "${address}",
+        "${province}",
+        #{hostid},
+        "${desc}",
+        <choose>
+            <when test="imgs == null or imgs == ''">
+                "",
+            </when>
+
+            <otherwise>
+                "${imgs}",
+            </otherwise>
+        </choose>
+        0)
+
+
+    </insert>
+
+    <update id="updateShop" parameterType="com.olanboa.wxhost.bean.ShopInfo">
+
+
+        update shops set id = id
+
+
+        <if test="shopName != null and shopName !=''">
+
+            ,shopName = "${shopName}"
+
+        </if>
+
+        <if test="address != null and address !=''">
+
+            ,address = "${address}"
+
+        </if>
+
+
+        <if test="province != null and province !=''">
+
+            ,province = "${province}"
+
+        </if>
+
+
+        <if test="hostid != null ">
+
+            ,hostid = #{hostid}
+
+        </if>
+
+        <if test="state != null ">
+
+            ,state = #{state}
+
+        </if>
+
+
+        <if test="desc != null and desc !=''">
+
+            ,desc = "${desc}"
+
+        </if>
+
+
+        <if test="imgs != null and imgs !=''">
+
+            ,imgs = "${imgs}"
+        </if>
+
+        where id = #{shopId} and state = 0
+
+    </update>
+
+
+    <select id="getShopInfo" resultType="com.olanboa.wxhost.bean.ShopInfo">
+
+      SELECT  id shopId,shopName ,address  ,province ,hostid ,imgs ,`desc` FROM shops WHERE id= #{shopId} AND state = 0
+
+    </select>
+
+
+    <select id="getShopList" resultType="com.olanboa.wxhost.bean.ShopInfo">
+
+        SELECT id shopId,shopName ,address ,province ,hostid ,imgs ,`desc` FROM shops WHERE state = 0
+
+        <if test="province != null and province != ''">
+            AND province LIKE CONCAT ("%","${province}","%")
+        </if>
+
+    </select>
+
+
+</mapper>

@@ -11,6 +11,7 @@ public enum ResultCodeType {
     FAIL(102, "操作失败"),
     PARAMERROR(103, "参数错误"),
     NOTFIND(104, "数据不存在"),
+    TIMEOUT(105, "链接超时"),
     OTHERSERROR(999, "未知异常"),
     ;
 
