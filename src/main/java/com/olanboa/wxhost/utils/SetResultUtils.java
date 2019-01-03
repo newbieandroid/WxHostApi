@@ -2,7 +2,6 @@ package com.olanboa.wxhost.utils;
 
 import com.olanboa.wxhost.base.BaseHttpResultBean;
 import com.olanboa.wxhost.bean.httpreq.AddBannerReq;
-import com.olanboa.wxhost.bean.httpreq.HomeImgDb;
 import com.olanboa.wxhost.config.ResultCodeType;
 
 import java.util.List;
@@ -37,8 +36,8 @@ public class SetResultUtils {
         } else if (data instanceof List) {
 
             if (data == null || ((List) data).size() == 0) {
-                resultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
-                resultBean.setMsg(ResultCodeType.FAIL.getMsg());
+                resultBean.setErrorCode(ResultCodeType.NOTFIND.getErrorCode());
+                resultBean.setMsg(ResultCodeType.NOTFIND.getMsg());
             } else {
                 resultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
                 resultBean.setMsg(ResultCodeType.SUCCESS.getMsg());
