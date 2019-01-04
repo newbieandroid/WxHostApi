@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olanboa.wxhost.mpper.OrderDevsMapper">
+
+    <insert id="addOrderDevs"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO orderDevs (orderId,sellPrice,roomTypeId,`count`,devId) VALUES
+        <foreach item="item" collection="devsDbList" separator=",">
+            (#{orderId},#{item.sellPrice},#{item.roomTypeId},#{item.devCount},#{item.devId})
+        </foreach>
+
+    </insert>
+
+
+</mapper>

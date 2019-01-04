@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olanboa.wxhost.mpper.OrderMapper">
+
+    <insert id="addOrder" parameterType="com.olanboa.wxhost.bean.BaseOrderDb" useGeneratedKeys="true"
+            keyProperty="orderId">
+
+                INSERT INTO `order`
+                    ( userBuyId, userSellerId, sellerShopId, houseTypeId, state, `timeStamp` )
+                VALUES
+                    ( #{buyerId}, #{sellerId}, #{shopId}, #{houseTypeId}, 0, UNIX_TIMESTAMP() )
+    </insert>
+
+</mapper>

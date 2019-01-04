@@ -12,7 +12,7 @@ public enum ResultCodeType {
     PARAMERROR(103, "参数错误"),
     NOTFIND(104, "数据不存在"),
     TIMEOUT(105, "链接超时"),
-    OTHERSERROR(999, "未知异常"),
+    OTHERSERROR(999, "程序出错"),
     ;
 
     private int errorCode;
