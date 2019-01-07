@@ -3,6 +3,7 @@ package com.olanboa.wxhost.bean.httpreq;
 import com.olanboa.wxhost.bean.BaseOrderDb;
 import com.olanboa.wxhost.bean.OrderCostDb;
 import com.olanboa.wxhost.bean.OrderDevsDb;
+import com.olanboa.wxhost.bean.OrderRoomDb;
 import lombok.Data;
 
 import java.util.List;
@@ -13,5 +14,8 @@ public class OrderReq {
     private BaseOrderDb orderInfo;
     private List<OrderCostDb> orderCostDbList;
     private List<OrderDevsDb> orderDevsDbList;
+
+
+    private List<OrderRoomDb> orderRoomDbList;
 
 }

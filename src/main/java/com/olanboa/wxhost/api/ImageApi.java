@@ -5,9 +5,11 @@ import com.olanboa.wxhost.bean.httpreq.AddHomeImgReq;
 import com.olanboa.wxhost.bean.httpreq.HomeImgDb;
 import com.olanboa.wxhost.config.ResultCodeType;
 import com.olanboa.wxhost.mpper.ImageMapper;
+import com.olanboa.wxhost.myexception.CustomExp;
 import com.olanboa.wxhost.utils.SetResultUtils;
 import com.qiniu.util.Json;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,13 +32,11 @@ public class ImageApi {
 
 
     @PostMapping("/addHomeImg")
-    BaseHttpResultBean<String> addHomeImg(@RequestBody AddHomeImgReq datas) {
+    @Transactional(rollbackFor = Exception.class)
+    BaseHttpResultBean<String> addHomeImg(@RequestBody AddHomeImgReq datas) throws CustomExp {
 
         int count = imageMapper.addHomeImg(datas.getImgs());
 
-        System.out.println("------------->" + count);
-
-        System.out.println("------------->" + Json.encode(datas));
 
         BaseHttpResultBean resultBean = new BaseHttpResultBean<>();
 
@@ -44,15 +44,16 @@ public class ImageApi {
             resultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
             resultBean.setMsg(ResultCodeType.SUCCESS.getMsg());
         } else {
-            resultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
-            resultBean.setMsg(ResultCodeType.FAIL.getMsg());
+
+            throw new CustomExp("添加图片失败");
         }
 
         return resultBean;
     }
 
     @PostMapping("/updateHomeImg")
-    BaseHttpResultBean updateHomeImg(@RequestBody HomeImgDb homeImgDb) {
+    @Transactional(rollbackFor = Exception.class)
+    BaseHttpResultBean updateHomeImg(@RequestBody HomeImgDb homeImgDb) throws CustomExp {
 
         BaseHttpResultBean resultBean = new BaseHttpResultBean<>();
 
@@ -69,8 +70,8 @@ public class ImageApi {
             resultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
             resultBean.setMsg(ResultCodeType.SUCCESS.getMsg());
         } else {
-            resultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
-            resultBean.setMsg(ResultCodeType.FAIL.getMsg());
+
+            throw new CustomExp("添加图片失败");
         }
 
         return resultBean;

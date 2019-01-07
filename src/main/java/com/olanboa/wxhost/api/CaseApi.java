@@ -31,7 +31,6 @@ public class CaseApi {
     @PostMapping("/addCaseItem")
     public BaseHttpResultBean addCaseItem(@RequestBody CaseReq caseReq) {
 
-        System.out.println("===>" + Json.encode(caseReq));
         BaseHttpResultBean baseHttpResultBean = new BaseHttpResultBean();
 
         if (caseReq.getUserId() == null || caseReq.getUserId() == 0
@@ -64,7 +63,6 @@ public class CaseApi {
 
         caseMapper.addCaseItem(caseReq.getCaseDb());
 
-        System.out.println("--->" + Json.encode(caseReq.getCaseDb()));
 
         if (caseReq.getCaseDb().getCaseId() > 0) {
             baseHttpResultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());

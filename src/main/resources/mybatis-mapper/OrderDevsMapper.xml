@@ -16,4 +16,33 @@
     </insert>
 
 
+    <select id="getOrderDevList" parameterType="java.lang.Integer"
+            resultType="com.olanboa.wxhost.bean.httpresult.OrderDevRes">
+
+
+                SELECT
+                    oD.id oDevId,
+                    dT.devTypeName dTypeName,
+                    d.devName dName,
+                    d.devIcon dIcon,
+                    d.`desc` devDesc,
+                    oD.count sellCount,
+                    oD.sellPrice sellPrice,
+                    d.price price ,
+                    rT.roomName dRoomName
+
+                FROM
+                    orderDevs oD
+                    LEFT JOIN devs d ON oD.devId = d.id
+                    LEFT JOIN devType dT ON dT.id = d.devTypeId
+                    LEFT JOIN roomType  rT ON rT.id = oD.roomTypeId
+                WHERE
+                    oD.orderId = 14
+
+                    ORDER BY oD.roomTypeId DESC
+
+
+    </select>
+
+
 </mapper>

@@ -5,8 +5,11 @@ import com.olanboa.wxhost.bean.httpreq.AddBannerReq;
 import com.olanboa.wxhost.bean.httpreq.BannerDb;
 import com.olanboa.wxhost.config.ResultCodeType;
 import com.olanboa.wxhost.mpper.BannerMapper;
+import com.olanboa.wxhost.mpper.UserMapper;
+import com.olanboa.wxhost.myexception.CustomExp;
 import com.olanboa.wxhost.utils.SetResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,22 +21,44 @@ public class BannerApi {
     @Autowired
     BannerMapper bannerMapper;
 
+    @Autowired
+    UserMapper userMapper;
+
 
     @PostMapping("addBanner")
-    public BaseHttpResultBean addBanner(@RequestBody AddBannerReq imgs) {
+    @Transactional(rollbackFor = Exception.class)
+    public BaseHttpResultBean addBanner(@RequestBody AddBannerReq imgs) throws CustomExp {
 
-        //插入新数据 并且返回插入数据成功后的主键,如果需要返回自增主键 在mapper中不能使用param注解  经过测试如果用注解则不会返回自增主键
-        bannerMapper.addBanner(imgs.getImgPath());
-        for (BannerDb item : imgs.getImgPath()) {
-            System.out.println("--------------->" + item.getBannerId());
+
+        if (imgs.getUserId() == null || imgs.getImgPath() == null || imgs.getImgPath().isEmpty()) {
+            throw new CustomExp("缺少参数");
         }
 
-        return SetResultUtils.checkResult(imgs);
+
+        if (userMapper.getUserItem(imgs.getUserId(), null) == null) {
+            throw new CustomExp("当前用户不存在");
+        }
+
+
+        //插入新数据 并且返回插入数据成功后的主键,如果需要返回自增主键 在mapper中不能使用param注解  经过测试如果用注解则不会返回自增主键
+        int count = bannerMapper.addBanner(imgs.getImgPath());
+
+        if (count <= 0) {
+            throw new CustomExp("添加banner失败");
+        }
+
+        BaseHttpResultBean baseHttpResultBean = new BaseHttpResultBean();
+
+        baseHttpResultBean.setMsg(ResultCodeType.SUCCESS.getMsg());
+        baseHttpResultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
+
+        return baseHttpResultBean;
 
     }
 
     @PostMapping("updateBanner")
-    public BaseHttpResultBean updateBanner(@RequestBody BannerDb bannerReq) {
+    @Transactional(rollbackFor = Exception.class)
+    public BaseHttpResultBean updateBanner(@RequestBody BannerDb bannerReq) throws CustomExp {
         int count = bannerMapper.updateBanner(bannerReq);
 
         BaseHttpResultBean result = new BaseHttpResultBean();
@@ -41,8 +66,7 @@ public class BannerApi {
             result.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
             result.setMsg(ResultCodeType.SUCCESS.getMsg());
         } else {
-            result.setErrorCode(ResultCodeType.FAIL.getErrorCode());
-            result.setMsg(ResultCodeType.FAIL.getMsg());
+            throw new CustomExp("更新banner失败");
         }
 
         return result;

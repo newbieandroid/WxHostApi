@@ -6,14 +6,14 @@ import com.olanboa.wxhost.bean.HouseTypeDb;
 import com.olanboa.wxhost.bean.ShopInfo;
 import com.olanboa.wxhost.bean.UserDb;
 import com.olanboa.wxhost.bean.httpreq.OrderReq;
+import com.olanboa.wxhost.bean.httpresult.*;
 import com.olanboa.wxhost.config.ResultCodeType;
 import com.olanboa.wxhost.mpper.*;
-import com.qiniu.util.Json;
+import com.olanboa.wxhost.myexception.CustomExp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import sun.rmi.runtime.Log;
 
 import java.util.List;
 
@@ -39,9 +39,13 @@ public class OrderApi {
     private HouseTypeMapper houseTypeMapper;
 
 
+    @Autowired
+    private OrderRoomMapper orderRoomMapper;
+
+
     @PostMapping("/addOrder")
     @Transactional(rollbackFor = Exception.class)
-    public BaseHttpResultBean addOrder(@RequestBody OrderReq orderReq) {
+    public BaseHttpResultBean addOrder(@RequestBody OrderReq orderReq) throws CustomExp {
         BaseHttpResultBean baseHttpResultBean = new BaseHttpResultBean();
 
 
@@ -61,6 +65,7 @@ public class OrderApi {
 
 
         if (orderReq.getOrderInfo() == null
+                || orderReq.getOrderInfo().getAddress() == null
                 || orderReq.getOrderInfo().getBuyerId() == null
                 || orderReq.getOrderInfo().getSellerId() == null
                 || orderReq.getOrderInfo().getShopId() == null
@@ -100,29 +105,126 @@ public class OrderApi {
             if (orderReq.getOrderCostDbList() != null && !orderReq.getOrderCostDbList().isEmpty()) {
                 int count = orderCostMapper.addOrderCost(orderReq.getOrderCostDbList(), orderReq.getOrderInfo().getOrderId());
 
+                if (count <= 0) {
+                    throw new CustomExp("添加订单费用失败");
+                }
 
             }
             if (orderReq.getOrderDevsDbList() == null || orderReq.getOrderDevsDbList().isEmpty()) {
-                baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
-                baseHttpResultBean.setMsg("请添加商品信息");
+                throw new CustomExp("请添加订单设备信息");
+
             } else {
-                orderDevsMapper.addOrderDevs(orderReq.getOrderDevsDbList(), orderReq.getOrderInfo().getOrderId());
+                int count = orderDevsMapper.addOrderDevs(orderReq.getOrderDevsDbList(), orderReq.getOrderInfo().getOrderId());
+                if (count <= 0) {
+                    throw new CustomExp("添加订单设备失败");
+                }
             }
+
+
+            if (orderReq.getOrderRoomDbList() == null || orderReq.getOrderRoomDbList().isEmpty()) {
+                throw new CustomExp("请添加用户房间信息");
+            } else {
+
+                int count = orderRoomMapper.addOrderRooms(orderReq.getOrderRoomDbList(), orderReq.getOrderInfo().getOrderId());
+                if (count <= 0) {
+                    throw new CustomExp("添加订单房间信息失败");
+                }
+            }
+
 
             baseHttpResultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
             baseHttpResultBean.setMsg(ResultCodeType.SUCCESS.getMsg());
 
-
-            System.out.println("-----插入成功后返回包含自增主键的信息----->" + Json.encode(orderReq));
-
         } else {
-            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
-            baseHttpResultBean.setMsg(ResultCodeType.FAIL.getMsg());
+            throw new CustomExp("添加订单信息失败");
+
         }
 
 
         return baseHttpResultBean;
 
+    }
+
+
+    @GetMapping("/getOrderItem")
+    public BaseHttpResultBean getOrderItem(@RequestParam("orderId") Integer orderId, @RequestParam("userId") Integer userId) {
+        BaseHttpResultBean baseHttpResultBean = new BaseHttpResultBean();
+
+
+        UserDb userDb = userMapper.getUserItem(userId, null);
+
+        if (userDb == null) {
+            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+            baseHttpResultBean.setMsg("当前用户不存在");
+            return baseHttpResultBean;
+        }
+
+
+        BaseOrderDb orderDb = orderMapper.getOrderItem(orderId);
+
+
+        if (orderDb == null) {
+            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+            baseHttpResultBean.setMsg("当前订单信息不存在");
+            return baseHttpResultBean;
+        }
+
+
+        //如果不是超级管理员 并且不是属于当前订单的买家或者卖家不能查看订单信息
+        if (!orderDb.getBuyerId().equals(userId) && !orderDb.getSellerId().equals(userId)) {
+            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+            baseHttpResultBean.setMsg("当前用户不能查看别人的订单");
+            return baseHttpResultBean;
+        }
+
+        OrderResult orderResult = new OrderResult();
+
+        orderResult.setCreatTime(orderDb.getCreatTime());
+        List<OrderRoomsRes> orderRoomDbs = orderRoomMapper.getOrderRooms(orderId);
+
+        if (orderRoomDbs == null || orderRoomDbs.isEmpty()) {
+            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+            baseHttpResultBean.setMsg("当前订单的房间信息不存在");
+            return baseHttpResultBean;
+        }
+        orderResult.setRoomsResList(orderRoomDbs);
+
+        List<OrderDevRes> orderDevRes = orderDevsMapper.getOrderDevList(orderId);
+        if (orderDevRes == null || orderDevRes.isEmpty()) {
+            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+            baseHttpResultBean.setMsg("当前订单的设备信息不存在");
+            return baseHttpResultBean;
+        }
+
+        orderResult.setDevResList(orderDevRes);
+
+
+        OrderBuyerRes orderBuyerRes = userMapper.getBuyerInfo(orderId);
+
+        if (orderBuyerRes == null) {
+            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+            baseHttpResultBean.setMsg("获取买家信息失败");
+            return baseHttpResultBean;
+        }
+        orderResult.setBuyerInfo(orderBuyerRes);
+
+        OrderSellerRes orderSellerRes = userMapper.getSellerInfo(orderId);
+        if (orderSellerRes == null) {
+            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+            baseHttpResultBean.setMsg("获取卖家信息失败");
+            return baseHttpResultBean;
+        }
+        orderResult.setSellerInfo(orderSellerRes);
+
+        List<OrderCostRes> orderCostRes = orderCostMapper.getOrderCost(orderId);
+        orderResult.setCostResList(orderCostRes);
+
+
+        baseHttpResultBean.setResult(orderResult);
+
+        baseHttpResultBean.setMsg(ResultCodeType.SUCCESS.getMsg());
+        baseHttpResultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
+        return baseHttpResultBean;
     }
 
 

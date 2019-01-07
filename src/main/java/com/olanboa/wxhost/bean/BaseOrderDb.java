@@ -10,4 +10,6 @@ public class BaseOrderDb {
     private Integer shopId;
     private Integer houseTypeId;
     private Integer state;
+    private String address;
+    private Long creatTime;
 }

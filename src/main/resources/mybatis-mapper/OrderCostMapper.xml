@@ -17,4 +17,22 @@
     </insert>
 
 
+    <select id="getOrderCost" parameterType="java.lang.Integer"
+            resultType="com.olanboa.wxhost.bean.httpresult.OrderCostRes">
+
+
+                    SELECT oC.price price, cT.typeName  costName
+
+                    FROM `order`  o
+
+                     LEFT JOIN  orderCost oC ON oC.orderId  = o.id
+
+                     LEFT JOIN costType cT ON cT.id = oC.costTypeId
+
+                    WHERE o.id = ${orderId}  AND o.state = 0
+
+
+
+    </select>
+
 </mapper>

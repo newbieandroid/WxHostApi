@@ -4,9 +4,11 @@ import com.olanboa.wxhost.base.BaseHttpResultBean;
 import com.olanboa.wxhost.bean.ShopInfo;
 import com.olanboa.wxhost.config.ResultCodeType;
 import com.olanboa.wxhost.mpper.ShopMapper;
+import com.olanboa.wxhost.myexception.CustomExp;
 import com.olanboa.wxhost.utils.SetResultUtils;
 import com.qiniu.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +19,8 @@ public class ShopApi {
     ShopMapper shopMapper;
 
     @PostMapping("addShop")
-    BaseHttpResultBean addShop(@RequestBody ShopInfo shopInfo) {
+    @Transactional(rollbackFor = Exception.class)
+    BaseHttpResultBean addShop(@RequestBody ShopInfo shopInfo) throws CustomExp {
 
         BaseHttpResultBean resultBean = new BaseHttpResultBean();
 
@@ -37,8 +40,7 @@ public class ShopApi {
                 resultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
 
             } else {
-                resultBean.setMsg(ResultCodeType.FAIL.getMsg());
-                resultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+                throw new CustomExp(ResultCodeType.FAIL.getMsg());
             }
         } else {
             resultBean.setMsg("缺少必要参数");
@@ -51,7 +53,8 @@ public class ShopApi {
 
 
     @PostMapping("updateShop")
-    BaseHttpResultBean updateShop(@RequestBody ShopInfo shopInfo) {
+    @Transactional(rollbackFor = Exception.class)
+    BaseHttpResultBean updateShop(@RequestBody ShopInfo shopInfo) throws CustomExp {
 
 
         BaseHttpResultBean baseHttpResultBean = getShopItem(shopInfo.getShopId());
@@ -71,8 +74,7 @@ public class ShopApi {
             baseHttpResultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
 
         } else {
-            baseHttpResultBean.setMsg(ResultCodeType.FAIL.getMsg());
-            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+            throw new CustomExp(ResultCodeType.FAIL.getMsg());
         }
 
         return baseHttpResultBean;

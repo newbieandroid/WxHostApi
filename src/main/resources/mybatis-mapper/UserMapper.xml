@@ -145,4 +145,47 @@
 
     </select>
 
+
+    <select id="getBuyerInfo" parameterType="java.lang.Integer"
+            resultType="com.olanboa.wxhost.bean.httpresult.OrderBuyerRes">
+
+                        SELECT
+                            u.id userId,
+                            u.userName buyerName,
+                            u.phone  buyerTel,
+                            h.typeName  houseName,
+                            o.addr address
+
+                        FROM
+                            `user` u
+                            LEFT JOIN `order` o ON o.userBuyId = u.id
+                            LEFT JOIN houseType h ON h.id = o.houseTypeId
+                        WHERE
+                            o.id = #{orderId}
+                            AND o.state = 0
+                            AND u.state = 0
+
+
+    </select>
+
+
+    <select id="getSellerInfo" parameterType="java.lang.Integer"
+            resultType="com.olanboa.wxhost.bean.httpresult.OrderSellerRes">
+
+                    SELECT
+                      u.userName sellerName,
+                        u.phone tel,
+                        s.shopName shopName
+                    FROM `user` u
+
+                     LEFT JOIN `order` o ON o.userSellerId = u.id
+
+                     LEFT JOIN shops  s ON s.id = o.sellerShopId
+
+                    WHERE  o.id = #{orderId}
+                    AND s.state = 0
+                    AND o.state = 0
+                    AND u.state = 0
+    </select>
+
 </mapper>

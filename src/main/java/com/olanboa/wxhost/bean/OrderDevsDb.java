@@ -12,5 +12,9 @@ public class OrderDevsDb {
     private Integer devCount;
     private Integer devId;
 
+    private String devName;
+    private String devIcon;
+    private String devDesc;
+    private String devPrice;
 
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olanboa.wxhost.mpper.OrderRoomMapper">
+
+    <insert id="addOrderRooms" parameterType="java.util.List">
+
+        INSERT INTO orderRooms (roomId,orderId) VALUES
+
+        <foreach collection="orderRoomDbList" item="item" separator=",">
+            (#{item.roomId},#{orderId})
+        </foreach>
+
+    </insert>
+
+    <select id="getOrderRooms" parameterType="java.lang.Integer"
+            resultType="com.olanboa.wxhost.bean.httpresult.OrderRoomsRes">
+                    SELECT
+                        oRooms.id oRoomId,
+                        rt.roomName roomName
+                    FROM
+                        orderRooms oRooms
+                        LEFT JOIN roomType rt ON oRooms.roomId = rt.id
+                    WHERE
+                        oRooms.orderId = #{orderId}
+
+    </select>
+
+</mapper>

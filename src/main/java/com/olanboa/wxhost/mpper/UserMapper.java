@@ -2,6 +2,8 @@ package com.olanboa.wxhost.mpper;
 
 import com.olanboa.wxhost.bean.UserDb;
 import com.olanboa.wxhost.bean.UserTypeDb;
+import com.olanboa.wxhost.bean.httpresult.OrderBuyerRes;
+import com.olanboa.wxhost.bean.httpresult.OrderSellerRes;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,7 +21,10 @@ public interface UserMapper {
 
     int updateUserInfo(UserDb userDb);
 
-    List<UserDb> getUserList(@Param("shopId") Integer shopId ,@Param("userId") Integer reqUserId);
+    List<UserDb> getUserList(@Param("shopId") Integer shopId, @Param("userId") Integer reqUserId);
 
+    OrderBuyerRes getBuyerInfo(@Param("orderId") Integer orderId);
+
+    OrderSellerRes getSellerInfo(@Param("orderId") Integer orderId);
 
 }

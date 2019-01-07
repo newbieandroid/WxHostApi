@@ -9,9 +9,26 @@
             keyProperty="orderId">
 
                 INSERT INTO `order`
-                    ( userBuyId, userSellerId, sellerShopId, houseTypeId, state, `timeStamp` )
+                    ( userBuyId, userSellerId, sellerShopId, houseTypeId, addr , state, `timeStamp` )
                 VALUES
-                    ( #{buyerId}, #{sellerId}, #{shopId}, #{houseTypeId}, 0, UNIX_TIMESTAMP() )
+                    ( #{buyerId}, #{sellerId}, #{shopId}, #{houseTypeId},"${address}", 0, UNIX_TIMESTAMP() )
     </insert>
+
+
+    <select id="getOrderItem" parameterType="java.lang.Integer"
+            resultType="com.olanboa.wxhost.bean.BaseOrderDb">
+                    SELECT
+                        id orderId,
+                        userBuyId buyerId,
+                        userSellerId sellerId,
+                        sellerShopId shopId,
+                        houseTypeId houseTypeId,
+                        `timeStamp` creatTime,
+                        addr address
+                    FROM
+                        `order` o
+                    WHERE
+                        o.state = 0 AND o.id = #{orderId};
+    </select>
 
 </mapper>

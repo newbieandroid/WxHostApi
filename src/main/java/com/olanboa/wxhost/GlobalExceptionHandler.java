@@ -2,6 +2,7 @@ package com.olanboa.wxhost;
 
 import com.olanboa.wxhost.base.BaseHttpResultBean;
 import com.olanboa.wxhost.config.ResultCodeType;
+import com.olanboa.wxhost.myexception.CustomExp;
 import com.qiniu.util.Json;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,13 +22,20 @@ public class GlobalExceptionHandler {
         System.out.println("=====================全局异常信息捕获===========开始============");
         System.out.println("请求路径:" + request.getRequestURL());
         ex.printStackTrace();
-        System.out.println("=====================全局异常信息捕获=============完毕==========");
+        System.out.println("\n=====================全局异常信息捕获=============完毕==========");
         PrintWriter out = null;
         try {
 
             BaseHttpResultBean baseHttpResultBean = new BaseHttpResultBean();
-            baseHttpResultBean.setErrorCode(ResultCodeType.OTHERSERROR.getErrorCode());
-            baseHttpResultBean.setMsg(ResultCodeType.OTHERSERROR.getMsg());
+
+            if (ex instanceof CustomExp) {
+                baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+                baseHttpResultBean.setMsg(ex.getMessage());
+            } else {
+                baseHttpResultBean.setErrorCode(ResultCodeType.OTHERSERROR.getErrorCode());
+                baseHttpResultBean.setMsg(ResultCodeType.OTHERSERROR.getMsg());
+            }
+
             out = response.getWriter();
             out.print(Json.encode(baseHttpResultBean));
         } catch (Exception e) {

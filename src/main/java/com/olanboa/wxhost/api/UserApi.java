@@ -7,9 +7,11 @@ import com.olanboa.wxhost.bean.UserTypeDb;
 import com.olanboa.wxhost.config.ResultCodeType;
 import com.olanboa.wxhost.mpper.ShopMapper;
 import com.olanboa.wxhost.mpper.UserMapper;
+import com.olanboa.wxhost.myexception.CustomExp;
 import com.olanboa.wxhost.utils.SetResultUtils;
 import com.qiniu.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +34,8 @@ public class UserApi {
 
 
     @PostMapping("/addShopUser")
-    public BaseHttpResultBean addShopUser(@RequestBody UserDb addShopUserReq) {
+    @Transactional(rollbackFor = Exception.class)
+    public BaseHttpResultBean addShopUser(@RequestBody UserDb addShopUserReq) throws CustomExp {
 
         BaseHttpResultBean baseHttpResultBean = new BaseHttpResultBean();
 
@@ -120,15 +123,15 @@ public class UserApi {
             baseHttpResultBean.setMsg(ResultCodeType.SUCCESS.getMsg());
             baseHttpResultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
         } else {
-            baseHttpResultBean.setMsg(ResultCodeType.FAIL.getMsg());
-            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+            throw new CustomExp("添加账号失败");
         }
         return baseHttpResultBean;
     }
 
 
     @PostMapping("/updateUserInfo")
-    public BaseHttpResultBean updateUserInfo(@RequestBody UserDb userDb) {
+    @Transactional(rollbackFor = Exception.class)
+    public BaseHttpResultBean updateUserInfo(@RequestBody UserDb userDb) throws CustomExp {
         BaseHttpResultBean baseHttpResultBean = new BaseHttpResultBean();
 
         if (userDb.getUserId() == null || userDb.getUserId() <= 0
@@ -171,8 +174,9 @@ public class UserApi {
             baseHttpResultBean.setMsg(ResultCodeType.SUCCESS.getMsg());
             baseHttpResultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
         } else {
-            baseHttpResultBean.setMsg(ResultCodeType.FAIL.getMsg());
-            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+
+            throw new CustomExp(ResultCodeType.FAIL.getMsg());
+
         }
 
         return baseHttpResultBean;
