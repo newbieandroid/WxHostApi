@@ -25,6 +25,7 @@
         <mapper resource="mybatis-mapper/OrderDevsMapper.xml"/>
         <mapper resource="mybatis-mapper/HouseMapper.xml"/>
         <mapper resource="mybatis-mapper/OrderRoomMapper.xml"/>
+        <mapper resource="mybatis-mapper/ExampleMapper.xml"/>
     </mappers>
 
 </configuration>
