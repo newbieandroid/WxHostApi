@@ -16,6 +16,7 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping("/banner")
 public class BannerApi {
 
     @Autowired
@@ -25,7 +26,7 @@ public class BannerApi {
     UserMapper userMapper;
 
 
-    @PostMapping("addBanner")
+    @PostMapping("/addBanner")
     @Transactional(rollbackFor = Exception.class)
     public BaseHttpResultBean addBanner(@RequestBody AddBannerReq imgs) throws CustomExp {
 
@@ -56,7 +57,7 @@ public class BannerApi {
 
     }
 
-    @PostMapping("updateBanner")
+    @PostMapping("/updateBanner")
     @Transactional(rollbackFor = Exception.class)
     public BaseHttpResultBean updateBanner(@RequestBody BannerDb bannerReq) throws CustomExp {
         int count = bannerMapper.updateBanner(bannerReq);

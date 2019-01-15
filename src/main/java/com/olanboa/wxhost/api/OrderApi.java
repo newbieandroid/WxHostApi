@@ -13,11 +13,11 @@ import com.olanboa.wxhost.myexception.CustomExp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import sun.rmi.runtime.Log;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/order")
 public class OrderApi {
 
     @Autowired

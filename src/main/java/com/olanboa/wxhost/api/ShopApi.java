@@ -12,13 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/shop")
 public class ShopApi {
 
 
     @Autowired
     ShopMapper shopMapper;
 
-    @PostMapping("addShop")
+    @PostMapping("/addShop")
     @Transactional(rollbackFor = Exception.class)
     BaseHttpResultBean addShop(@RequestBody ShopInfo shopInfo) throws CustomExp {
 
@@ -52,7 +53,7 @@ public class ShopApi {
     }
 
 
-    @PostMapping("updateShop")
+    @PostMapping("/updateShop")
     @Transactional(rollbackFor = Exception.class)
     BaseHttpResultBean updateShop(@RequestBody ShopInfo shopInfo) throws CustomExp {
 

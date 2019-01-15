@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/user")
 public class UserApi {
 
 
@@ -182,7 +183,6 @@ public class UserApi {
         return baseHttpResultBean;
 
     }
-
 
     @GetMapping("/getUserList")
     public BaseHttpResultBean getUserList(@RequestParam(required = false, name = "shopId") Integer shopId, @RequestParam("userId") Integer userId) {

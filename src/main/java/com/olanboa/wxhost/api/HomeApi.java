@@ -9,11 +9,13 @@ import com.olanboa.wxhost.mpper.ImageMapper;
 import com.olanboa.wxhost.mpper.ShopMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@RestController
+@RestController()
+@RequestMapping("/home")
 public class HomeApi {
 
     @Autowired
@@ -28,7 +30,7 @@ public class HomeApi {
     @Autowired
     private ImageMapper imageMapper;
 
-    @GetMapping(name = "/getHomeInfo")
+    @GetMapping("/getHomeInfo")
     BaseHttpResultBean<HomeBean> getHomeInfo(@RequestParam(required = false, name = "province") String province) {
 
         BaseHttpResultBean<HomeBean> baseHttpResultBean = new BaseHttpResultBean<HomeBean>();
