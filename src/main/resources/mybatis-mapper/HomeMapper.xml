@@ -5,14 +5,15 @@
 
 <mapper namespace="com.olanboa.wxhost.mpper.HomeMapper">
 
-    <select id="getHomeInfo" parameterType="java.lang.String" resultType="com.olanboa.wxhost.bean.ShopInfo">
+    <select id="getHomeInfo" parameterType="java.lang.String" resultType="com.olanboa.wxhost.bean.httpresult.HomeShopRes">
         SELECT
-        b.shopName,
-        b.address,
-        b.`desc`,
-        b.imgs,
-        a.userName,
-        a.phone
+        b.id shopId,
+        b.shopName shopName,
+        b.address shopAddr,
+        b.`desc` shopDes,
+        b.imgs shopImg,
+        a.userName hostName,
+        a.phone hostTel
         FROM
         shops b,
         `user` a
