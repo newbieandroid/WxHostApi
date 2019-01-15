@@ -12,8 +12,8 @@
 
     <select id="getExampleList" resultType="com.olanboa.wxhost.bean.httpresult.ExampleRes">
 
-
 				SELECT
+					e.id caseId,
 					e.img  imgPath,
 					e.title title,
 					e.time time,

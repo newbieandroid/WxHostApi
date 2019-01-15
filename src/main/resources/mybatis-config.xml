@@ -18,7 +18,6 @@
         <mapper resource="mybatis-mapper/ImageMapper.xml"/>
         <mapper resource="mybatis-mapper/ShopMapper.xml"/>
         <mapper resource="mybatis-mapper/UserMapper.xml"/>
-        <mapper resource="mybatis-mapper/CaseMapper.xml"/>
         <mapper resource="mybatis-mapper/OrderMapper.xml"/>
         <mapper resource="mybatis-mapper/CostMapper.xml"/>
         <mapper resource="mybatis-mapper/OrderCostMapper.xml"/>

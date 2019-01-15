@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ExampleRes {
 
+    private Integer caseId;
     private String title;
     private String imgPath;
     private Long time;
