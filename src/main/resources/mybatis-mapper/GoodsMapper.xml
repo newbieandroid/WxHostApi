@@ -6,11 +6,10 @@
 <mapper namespace="com.olanboa.wxhost.mpper.GoodsMapper">
 
     <select id="getDevTypes" resultType="com.olanboa.wxhost.bean.DevTypeDb">
-          SELECT id,devTypeName typeName,icon img FROM devType
-
-          <if test="#{typeId} != null">
-           where  id = #{typeId}
-          </if>
+        SELECT id,devTypeName typeName,icon img FROM devType
+        <if test="typeId != null">
+            where id = #{typeId}
+        </if>
     </select>
 
     <select id="getDevList" resultType="com.olanboa.wxhost.bean.DevDb" parameterType="java.lang.Integer">
@@ -26,10 +25,9 @@
         devs ds
         LEFT JOIN devType dt ON dt.id = ds.devTypeId
 
-        <if test="#{typeId} != null">
+        <if test="typeId != null">
             WHERE ds.devTypeId = #{typeId}
         </if>
-
         ORDER BY ds.devTypeId ASC
 
     </select>

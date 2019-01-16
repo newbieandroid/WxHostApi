@@ -18,10 +18,12 @@ public class GoodsApi {
 
     @GetMapping("/getDevTypeAndDevs")
     public BaseHttpResultBean getDevTypeAndDevs(@RequestParam(name = "typeId", required = false) Integer id) {
+
+        System.out.println("---->" + id);
         AllGoodsInfoRes goodsInfoRes = new AllGoodsInfoRes();
         BaseHttpResultBean baseHttpResultBean = new BaseHttpResultBean();
-        goodsInfoRes.setGoodsTypeDbs(goodsMapper.getDevTypes(id));
-        goodsInfoRes.setDevDbList(goodsMapper.getDevList(id));
+        goodsInfoRes.setGoodsTypeDbs(goodsMapper.getDevTypes((id == null || id == 0) ? null : id));
+        goodsInfoRes.setDevDbList(goodsMapper.getDevList((id == null || id == 0) ? null : id));
         baseHttpResultBean.setResult(goodsInfoRes);
         return baseHttpResultBean;
     }
