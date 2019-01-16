@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olanboa.wxhost.mpper.GoodsMapper">
+
+    <select id="getDevTypes" resultType="com.olanboa.wxhost.bean.DevTypeDb">
+          SELECT id,devTypeName typeName,icon img FROM devType
+
+          <if test="#{typeId} != null">
+           where  id = #{typeId}
+          </if>
+    </select>
+
+    <select id="getDevList" resultType="com.olanboa.wxhost.bean.DevDb" parameterType="java.lang.Integer">
+        SELECT
+        ds.id,
+        ds.devTypeId,
+        ds.devName,
+        ds.devIcon devImg,
+        ds.price,
+        ds.`desc` devDes
+
+        FROM
+        devs ds
+        LEFT JOIN devType dt ON dt.id = ds.devTypeId
+
+        <if test="#{typeId} != null">
+            WHERE ds.devTypeId = #{typeId}
+        </if>
+
+        ORDER BY ds.devTypeId ASC
+
+    </select>
+</mapper>
