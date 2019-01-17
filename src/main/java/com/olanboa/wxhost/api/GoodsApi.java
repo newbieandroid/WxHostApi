@@ -4,6 +4,7 @@ import com.olanboa.wxhost.base.BaseHttpResultBean;
 import com.olanboa.wxhost.bean.httpresult.AllGoodsInfoRes;
 import com.olanboa.wxhost.config.ResultCodeType;
 import com.olanboa.wxhost.mpper.GoodsMapper;
+import com.olanboa.wxhost.utils.SetResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +30,12 @@ public class GoodsApi {
         goodsInfoRes.setDevDbList(goodsMapper.getDevList((id == null || id == 0) ? null : id));
         baseHttpResultBean.setResult(goodsInfoRes);
         return baseHttpResultBean;
+    }
+
+
+    @GetMapping("/getDevInfo")
+    public BaseHttpResultBean getDevInfo(@RequestParam("devId") Integer devId) {
+
+      return   SetResultUtils.checkResult(goodsMapper.getDevInfo(devId));
     }
 }

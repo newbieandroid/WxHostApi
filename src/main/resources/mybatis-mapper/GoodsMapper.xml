@@ -31,4 +31,9 @@
         ORDER BY ds.devTypeId ASC
 
     </select>
+
+
+    <select id="getDevInfo" parameterType="java.lang.Integer" resultType="com.olanboa.wxhost.bean.DevImgDb">
+          select  devImg imgPath from  devImgs where  devId = #{devId}
+    </select>
 </mapper>

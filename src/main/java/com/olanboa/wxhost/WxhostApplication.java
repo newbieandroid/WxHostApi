@@ -12,6 +12,7 @@ public class WxhostApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WxhostApplication.class, args);
+
     }
 
 }
