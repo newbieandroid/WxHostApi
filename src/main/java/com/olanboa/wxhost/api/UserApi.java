@@ -4,14 +4,20 @@ import com.olanboa.wxhost.base.BaseHttpResultBean;
 import com.olanboa.wxhost.bean.ShopInfo;
 import com.olanboa.wxhost.bean.UserDb;
 import com.olanboa.wxhost.bean.UserTypeDb;
+import com.olanboa.wxhost.bean.httpreq.SendWxTempReq;
 import com.olanboa.wxhost.config.ResultCodeType;
 import com.olanboa.wxhost.mpper.ShopMapper;
 import com.olanboa.wxhost.mpper.UserMapper;
 import com.olanboa.wxhost.myexception.CustomExp;
+import com.olanboa.wxhost.utils.HttpUtil;
 import com.olanboa.wxhost.utils.SetResultUtils;
+import com.qiniu.util.Json;
+import com.qiniu.util.StringMap;
 import com.qiniu.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -238,5 +244,26 @@ public class UserApi {
 
     }
 
+
+    @PostMapping("/sendWxTemp")
+    public BaseHttpResultBean sendWxTemp(@RequestBody SendWxTempReq sendWxTempReq) {
+
+        String accessToken = Json.decode(HttpUtil.HttpRestClient("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxf55f304ecb1cceb9&secret=02715b1ff4e3abf1d7355290b714cc2d", HttpMethod.GET, new LinkedMultiValueMap<String, String>())).get("access_token").toString();
+
+        BaseHttpResultBean baseHttpResultBean = new BaseHttpResultBean();
+
+        StringMap openIdMap = Json.decode(HttpUtil.HttpRestClient("https://api.weixin.qq.com/sns/jscode2session?&appid=wxf55f304ecb1cceb9&secret=02715b1ff4e3abf1d7355290b714cc2d&grant_type=authorization_code&js_code=" + sendWxTempReq.getWxCode(), HttpMethod.GET, new LinkedMultiValueMap<String, String>()));
+        if ((int) openIdMap.get("errcode") == 0) {
+            String openId = openIdMap.get("openid").toString();
+
+
+
+        } else {
+            baseHttpResultBean.setErrorCode(ResultCodeType.FAIL.getErrorCode());
+            baseHttpResultBean.setMsg("获取用户的openId失败");
+        }
+
+        return baseHttpResultBean;
+    }
 
 }

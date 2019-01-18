@@ -74,4 +74,15 @@ public class ExampleApi {
         return SetResultUtils.checkResult(exampleMapper.getExampleList());
 
     }
+
+
+    @GetMapping("/getExampleItemImgs")
+    public BaseHttpResultBean getExampleItemImgs(@RequestParam("caseId") Integer caseId) {
+
+
+        return SetResultUtils.checkResult(exampleMapper.getImgs(caseId));
+
+    }
+
+
 }

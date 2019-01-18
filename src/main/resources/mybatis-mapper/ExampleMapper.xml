@@ -27,4 +27,13 @@
 					LEFT JOIN  `user` u ON u.id = s.hostid
 				WHERE s.state = 0 AND u.state = 0
     </select>
+
+
+    <select id="getImgs" parameterType="java.lang.Integer" resultType="com.olanboa.wxhost.bean.ExampleImgDb">
+
+
+ 			select img from exampleImg where exampleId =#{caseId}
+
+    </select>
+
 </mapper>
