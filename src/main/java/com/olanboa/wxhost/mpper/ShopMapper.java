@@ -1,5 +1,6 @@
 package com.olanboa.wxhost.mpper;
 
+import com.olanboa.wxhost.bean.ShopImgDb;
 import com.olanboa.wxhost.bean.ShopInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,4 +18,7 @@ public interface ShopMapper {
 
     List<ShopInfo> getShopList(@Param("province") String province, @Param("shopId") Integer shopId);
 
+    int addShopImg(Integer shopId, List<ShopImgDb> shopImgDbList);
+
+    List<ShopImgDb> getShopImgs(Integer shopId);
 }

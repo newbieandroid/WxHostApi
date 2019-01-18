@@ -37,8 +37,15 @@ public class ShopApi {
 
             if (shopInfo.getShopId() != null) {
 
-                resultBean.setMsg(ResultCodeType.SUCCESS.getMsg());
-                resultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
+                int count = shopMapper.addShopImg(shopInfo.getShopId(), shopInfo.getImgs());
+
+                if (count > 0) {
+                    resultBean.setMsg(ResultCodeType.SUCCESS.getMsg());
+                    resultBean.setErrorCode(ResultCodeType.SUCCESS.getErrorCode());
+                } else {
+                    throw new CustomExp("添加店铺图片失败");
+                }
+
 
             } else {
                 throw new CustomExp(ResultCodeType.FAIL.getMsg());
@@ -64,9 +71,7 @@ public class ShopApi {
             return baseHttpResultBean;
         }
 
-
         baseHttpResultBean.setResult(null);
-
 
         int count = shopMapper.updateShop(shopInfo);
 
@@ -82,10 +87,12 @@ public class ShopApi {
     }
 
     @GetMapping("/getShopItem")
-    BaseHttpResultBean<ShopInfo> getShopItem(@RequestParam(required = true, name = "shopId") int shopId) {
+    BaseHttpResultBean<ShopInfo> getShopItem(@RequestParam("shopId") int shopId) {
         BaseHttpResultBean baseHttpResultBean = new BaseHttpResultBean();
 
         ShopInfo shopInfo = shopMapper.getShopInfo(shopId);
+        shopInfo.setImgs(shopMapper.getShopImgs(shopId));
+
         baseHttpResultBean.setResult(shopInfo);
         if (shopInfo != null) {
             baseHttpResultBean.setMsg(ResultCodeType.SUCCESS.getMsg());

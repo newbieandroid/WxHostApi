@@ -89,4 +89,11 @@ public class BannerApi {
     }
 
 
+    @GetMapping("/getBannerItemInfo")
+    public BaseHttpResultBean getBannerItemInfo(@RequestParam("bannerId") Integer bannerId){
+
+        return SetResultUtils.checkResult(bannerMapper.getBannerItem(bannerId));
+    }
+
+
 }

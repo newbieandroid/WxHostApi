@@ -11,7 +11,7 @@
         b.shopName shopName,
         b.address shopAddr,
         b.`desc` shopDes,
-        b.imgs shopImg,
+        b.shopIcon shopImg,
         a.userName hostName,
         a.phone hostTel
         FROM

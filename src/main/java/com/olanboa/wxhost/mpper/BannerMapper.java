@@ -1,5 +1,6 @@
 package com.olanboa.wxhost.mpper;
 
+import com.olanboa.wxhost.bean.BannerInfoDb;
 import com.olanboa.wxhost.bean.httpreq.BannerDb;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,5 +17,7 @@ public interface BannerMapper {
     BannerDb getItem(@Param("bannerId") Integer bannerId);
 
     List<BannerDb> getList();
+
+    List<BannerInfoDb> getBannerItem(Integer bannerId);
 
 }

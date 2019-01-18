@@ -17,7 +17,7 @@
         province,
         hostid,
         `desc`,
-        imgs,
+        shopIcon,
         state)
         VALUES
         ("${shopName}",
@@ -26,12 +26,12 @@
         #{hostid},
         "${desc}",
         <choose>
-            <when test="imgs == null or imgs == ''">
+            <when test="shopIcon == null or shopIcon == ''">
                 "",
             </when>
 
             <otherwise>
-                "${imgs}",
+                "${shopIcon}",
             </otherwise>
         </choose>
         0)
@@ -85,9 +85,9 @@
         </if>
 
 
-        <if test="imgs != null and imgs !=''">
+        <if test="shopIcon != null and shopIcon !=''">
 
-            ,imgs = "${imgs}"
+            ,shopIcon = "${shopIcon}"
         </if>
 
         where id = #{shopId} and state = 0
@@ -97,14 +97,14 @@
 
     <select id="getShopInfo" resultType="com.olanboa.wxhost.bean.ShopInfo">
 
-      SELECT  id shopId,shopName ,address  ,province ,hostid ,imgs ,`desc` FROM shops WHERE id= #{shopId} AND state = 0
+      SELECT  id shopId,shopName ,address  ,province ,hostid ,shopIcon ,`desc` FROM shops WHERE id= #{shopId} AND state = 0
 
     </select>
 
 
     <select id="getShopList" resultType="com.olanboa.wxhost.bean.ShopInfo">
 
-        SELECT id shopId,shopName ,address ,province ,hostid ,imgs ,`desc` FROM shops WHERE state = 0
+        SELECT id shopId,shopName ,address ,province ,hostid ,shopIcon ,`desc` FROM shops WHERE state = 0
 
         <if test="province != null and province != ''">
             AND province LIKE CONCAT ("%","${province}","%")
@@ -115,6 +115,22 @@
         </if>
 
 
+    </select>
+
+
+    <insert id="addShopImg" keyProperty="id" useGeneratedKeys="true">
+
+        insert into shopImg(shopId,img) values
+
+        <foreach item="item" collection="shopImgDbList" separator=",">
+            (#{shopId},#{item.shopImg})
+        </foreach>
+    </insert>
+
+
+    <select id="getShopImgs" parameterType="java.lang.Integer" resultType="com.olanboa.wxhost.bean.ShopImgDb">
+
+            select id ,shopId,img shopImg from  shopImg where  shopId = #{shopId}
     </select>
 
 

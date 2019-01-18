@@ -54,4 +54,10 @@
     </select>
 
 
+    <select id="getBannerItem" parameterType="java.lang.Integer" resultType="com.olanboa.wxhost.bean.BannerInfoDb">
+
+            select imgPath from bannerInfo where  bannerId = #{bannerId}
+
+    </select>
+
 </mapper>
