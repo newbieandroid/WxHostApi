@@ -26,6 +26,7 @@
         <mapper resource="mybatis-mapper/OrderRoomMapper.xml"/>
         <mapper resource="mybatis-mapper/ExampleMapper.xml"/>
         <mapper resource="mybatis-mapper/GoodsMapper.xml"/>
+        <mapper resource="mybatis-mapper/AddMsgMapper.xml"/>
     </mappers>
 
 </configuration>

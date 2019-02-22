@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.olanboa.wxhost.mpper.AddMsgMapper">
+
+
+    <insert id="addMsg" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.olanboa.wxhost.bean.httpreq.AddMsgReq">
+
+          INSERT  message(`name`,address,tel,des,`timeStamp`,state)
+          VALUES (#{name},#{address},#{tel},#{des},UNIX_TIMESTAMP(),0)
+
+    </insert>
+
+
+</mapper>
